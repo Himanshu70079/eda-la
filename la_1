@@ -1,0 +1,140 @@
+##AMAZON CONSUMER REVIEWS DATASET
+#Learning Activity - 1
+setwd("D:/EDA")
+
+getwd()
+
+#View the first few rows of the data:
+head(Amazon_database)
+
+#View the structure of the data:
+str(Amazon_database)
+
+#Count the number of rows in the data:
+nrow(Amazon_database)
+
+#Count the number of columns in the data:
+ncol(Amazon_database)
+
+#Summarize the data:
+summary(Amazon_database)  
+
+#Count the frequency of values in a categorical column:
+table(Amazon_database$id)
+
+#Group the data by a categorical column and calculate summary statistics:
+aggregate(id~name , data = Amazon_database, FUN = summary)
+
+#Get the dimensions of the data: 
+dim(Amazon_database)
+
+#Perform a chi-square test of independence:
+chisq.test(Amazon_database$name,Amazon_database$id)
+
+#Create a contingency table between two categorical columns:
+table(Amazon_database$id, Amazon_database$brand)
+
+#Create a new data containing unique values of a specific column:
+unique_dataset <- unique(Amazon_database$categories)
+unique_dataset
+
+#Extract the year from a date column:
+Amazon_database$year <- lubridate::year(Amazon_database$dateAdded)
+Amazon_database$year
+
+#Extract the month from a date column:
+Amazon_database$month <- lubridate::month(Amazon_database$dateAdded)
+Amazon_database$month
+
+#Extract the day from a date column:
+Amazon_database$day <- lubridate::day(Amazon_database$dateUpdated)
+Amazon_database$day
+
+#Convert a character column to a factor:
+Amazon_database$factor_column <- as.factor(Amazon_database$categories)
+Amazon_database$factor_column
+
+#Calculate the percentage of each category in a categorical column:
+category_percentages <- prop.table(table(Amazon_database$brand)) * 100
+category_percentages
+
+#Convert a string column to lowercase:
+Amazon_database$string_column <- tolower(Amazon_database$name)
+Amazon_database$string_column
+
+#Calculate the word count in a text column:
+Amazon_database$word_count <- lengths(strsplit(Amazon_database$categories, "Health "))
+Amazon_database$word_count
+
+#Convert a date column to a specific date format:
+Amazon_database$dateUpdated <- as.Date(Amazon_database$dateUpdated, format = "%Y/%m/%d")
+Amazon_database$dateUpdated
+
+#Create a new column that indicates whether a condition is met:
+Amazon_database$new_column <- ifelse(Amazon_database$brand == "Amazon", "yes","no")
+Amazon_database$new_column
+
+#Create a new data by randomly sampling rows with replacement:
+sampled_dataset <-Amazon_database[sample(nrow(Amazon_database), size = 100, replace = TRUE), ]
+sampled_dataset
+
+#Calculate the proportion of unique values in a categorical column:
+proportion_unique <- length(unique(Amazon_database$name)) / length(Amazon_database$name)
+proportion_unique
+
+#Calculate the mode of a numeric or categorical column using the tools package:
+mode_value <- Mode(Amazon_database$manufacturerNumber)
+mode_value
+
+#Count the number of unique categories in a column:
+length(unique(Amazon_database$brand))
+
+#Get the frequency of each category in a column:
+table(Amazon_database$categories)
+
+#Calculate the cumulative proportion of each category in a column:
+cumsum(prop.table(table(Amazon_database$id)))
+
+#Calculate the entropy of a categorical column:
+entropy <- sum(-prop.table(table(Amazon_database$id)) * log(prop.table(table(Amazon_database$id))))
+entropy
+
+#Compute a contingency table for two categorical variables:
+contingencyTable <- table(Amazon_database$id, Amazon_database$keys)
+contingencyTable
+
+#Calculate the row percentages in a contingency table:
+prop.table(contingencyTable, 1)
+
+#Calculate the column percentages in a contingency table:
+prop.table(contingencyTable, 2)
+
+#Calculate the expected frequencies in a contingency table (chi-squared test):
+expectedFreqs <- chisq.test(Amazon_database$id, Amazon_database$keys)$expected
+expectedFreqs
+
+#Calculate the adjusted standardized residuals in a contingency table:
+residuals <- resid(chisq.test(Amazon_database$name, Amazon_database$categories))
+residuals
+
+#Perform a test for paired nominal data:
+mcnemar.test(table(Amazon_database$id, Amazon_database$name))
+
+#Compute the V coefficient of association between two categorical variables:
+library("vcd")
+assocstats(table(Amazon_database$categories,Amazon_database$brand))$cramer
+
+#Compute the  V coefficient of association for a contingency table:
+assocstats(contingencyTable)$cramer
+
+
+
+
+
+
+
+
+
+
+
+
