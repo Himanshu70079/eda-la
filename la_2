@@ -1,0 +1,85 @@
+#Scatter plot:
+plot(USA_Database$current_votes, USA_Database$total_votes)
+
+# Scatter plot of 'current votes' vs 'Total votes'
+library(ggplot2)
+ggplot(USA_Database, aes(x = USA_Database$current_votes, y =USA_Database$total_votes)) +
+  geom_point(color = "steelblue") +
+  labs(title = "Current votes vs Total votes",
+       x = "Current votes",
+       y = "Total votes")
+
+#Bar plot:
+barplot(USA_Database$current_votes, names.arg = paste(USA_Database$state, USA_Database$county))
+
+#Histogram:
+hist(USA_Database$current_votes)
+
+#Box plot:
+boxplot(USA_Database$current_votes ~ USA_Database$state)
+
+#Pie chart:
+pie(USA_Database$current_votes, labels = paste(USA_Database$state, USA_Database$county))
+
+#Line plot:
+plot(USA_Database$total_votes, type = "l", xlab = "County", ylab = "Total Votes", main = "Total Votes by County")
+
+library(dplyr)
+library(ggplot2)
+
+#Scatter Plot Matrix:
+pairs(data.frame(USA_Database$current_votes,USA_Database$total_votes), main = "Scatter Plot Matrix")
+
+#Grouped Box Plot:
+boxplot(list(USA_Database$current_votes,USA_Database$total_votes), names = c("Current Votes", "Total Votes"), xlab = "Votes", ylab = "Count", main = "Grouped Box Plot: Current Votes vs. Total Votes")
+
+#Area Plot with Stacked Lines:
+matplot(t(cbind(USA_Database$current_votes,USA_Database$total_votes)), type = "l", col = c("blue", "red"), xlab = "County", ylab = "Votes", main = "Area Plot with Stacked Lines: Current Votes vs. Total Votes")
+legend("topleft", legend = c("Current Votes", "Total Votes"), col = c("blue", "red"), lty = 1)
+
+#Polar Plot:
+library(plotrix)
+polar.plot(USA_Database$total_votes, clockwise = TRUE, rp.type = "p", main = "Polar Plot: Total Votes by County")
+
+#Word Cloud:
+library(wordcloud)
+wordcloud(USA_Database$county,USA_Database$current_votes, scale = c(5, 0.5), max.words = 20, random.order = FALSE, colors = brewer.pal(8, "Dark2"), main = "Word Cloud: Current Votes by County")
+
+#Network Graph:
+library(igraph)
+edges <- data.frame(from =USA_Database$county, to =USA_Database$county, weight =USA_Database $total_votes)
+g <- graph.data.frame(edges, directed = FALSE)
+plot(g, vertex.size =USA_Database$current_votes, vertex.color = "blue", vertex.label =USA_Database$county, main = "Network Graph: County Connections based on Total Votes")
+
+#Point plot
+library(ggplot2)
+ggplot(USA_Database, mapping = aes(x = USA_Database$current_votes , y = USA_Database$total_votes))+ geom_point()
+
+ggplot(USA_Database , mapping = aes(x =USA_Database$percent , y =USA_Database$state))+ geom_point()
+
+#Density plot
+ggplot(USA_Database, aes(x = USA_Database$percent)) +geom_density()
+
+#Distribution of Grade
+ggplot(USA_Database, aes(x = factor(USA_Database$state))) +
+  geom_bar(fill = "lightpink") +
+  labs(title = "Distribution of states",
+       x = "State",
+       y = "Count")
+
+# Grouped bar chart
+ggplot(USA_Database, aes(x = factor(USA_Database$state), fill = factor(USA_Database$state))) +
+  geom_bar() +
+  labs(title = "Grouped Bar Chart",
+       x = "States",
+       y = "Count") +
+  scale_fill_brewer(palette = "Set1")
+
+#Violin plot
+ggplot(USA_Database, aes(x = factor(1), y = USA_Database$percent)) +
+  geom_violin(fill = "lightgreen", color = "black") 
+
+#Treemap:
+library(treemap)
+data <- data.frame(USA_Database$county,USA_Database$current_votes)
+treemap(USA_Database, index = "county", vSize = "current_votes", type = "index", title = "Treemap: Current Votes by County")
